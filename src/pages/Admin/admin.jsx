@@ -1,11 +1,17 @@
 import React, { Component } from 'react'
+import {connect} from 'react-redux'
 
-export default class Admin extends Component {
+class Admin extends Component {
     render() {
         return (
             <div>
-                Admin
+                hello!{console.log(this.props) }
             </div>
         )
     }
 }
+
+export default connect(
+	state => ({userInfo:state.userInfo}),
+	{}
+)(Admin)

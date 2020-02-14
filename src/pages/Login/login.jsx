@@ -1,14 +1,48 @@
 import React, { Component } from 'react'
 import './css/login.less'
 import logo from './imgs/logo.png'
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import {saveUserAction} from '../../redux/action/login_action'
+import { Form, Icon, Input, Button,message} from 'antd';
+import {connect} from 'react-redux'
+import {QusLogin} from '../../api'
 
 class Login extends Component {
+    passwordValidator = (rule, value, callback)=>{
+		if(!value){
+			callback('密码必须输入')
+		}else if(value.length > 12){
+			callback('密码必须小于等于12位')
+		}else if(value.length < 4){
+			callback('密码必须大于等于4位')
+		}else if(!(/^\w+$/).test(value)){
+			callback('密码必须是英文、数字或下划线组成')
+		}else{
+			callback()
+		}
+	}
     handleSubmit = event => {
         event.preventDefault();
-        this.props.form.validateFields((err, values) => {
+        // console.log(this)
+        this.props.form.validateFields(async(err, values) => {
         if (!err) {
-            console.log('Received values of form: ', values);
+            // let {username,password} = values
+            // console.log(values)
+            let LoginRes = await QusLogin(values)
+            let {status,data,msg} = LoginRes
+            // console.log(LoginRes)
+            if(status === 0){
+                message.success('登录成功')
+                this.props.history.replace('/admin')
+                this.props.saveUserAction(data)
+            }else{
+                message.warning(msg)
+            }
+
+            // MyAxios.post("http://localhost:3000/login",`username=${username}&password=${password}`)
+            // .then(
+            //     (response)=>{console.log("成功了",response)},
+            //     (error)=>{console.log("失败了",error)},
+            // )
         }
         });
     };
@@ -34,8 +68,8 @@ class Login extends Component {
                         {getFieldDecorator('username', {
                             rules: [
                                 { required: true, message: '用户名不能为空!' },
-                                {max:12,message:'用户名必须大于等于4位'},
-                                {min:4,message:'用户名必须小于等于12位'},
+                                {max:12,message:'密码必须小于等于12位'},
+                                {min:4,message:'密码必须大于等于4位'},
                                 {pattern:/^\w+$/,message:'用户名必须是英文、数字或下划线组成'},
                             ],
 
@@ -47,20 +81,19 @@ class Login extends Component {
                         )}
                         </Form.Item>
                         <Form.Item>
-                        {getFieldDecorator('password', {
-                            rules: [
-                                { required: true, message: '密码不能为空!' },
-                                {max:12,message:'密码必须大于等于4位'},
-                                {min:4,message:'密码必须小于等于12位'},
-                                {pattern:/^\w+$/,message:'用户名必须是英文、数字或下划线组成'},
-                            ],
-                        })(
-                            <Input
-                            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                            type="password"
-                            placeholder="密码"
-                            />,
-                        )}
+                        {
+								getFieldDecorator('password',{
+									rules:[
+										{validator:this.passwordValidator}
+									]
+								})(
+									<Input
+										prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+										type="password"
+										placeholder="密码"
+									/>
+								)
+							}
                         </Form.Item>
                         <Form.Item>
                         <Button type="primary" htmlType="submit" className="login-form-button">
@@ -72,5 +105,8 @@ class Login extends Component {
             </div> 
         )           
 }}  
-export default  Form.create()(Login);
+export default  connect(
+    (state)=>({userInfo:state.userInfo}),
+    {saveUserAction}
+)(Form.create()(Login));
 
