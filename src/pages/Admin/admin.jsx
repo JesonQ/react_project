@@ -19,7 +19,6 @@ class Admin extends Component {
 
 export default connect(
 	state => {
-        console.log(object)
         return {userInfo:state.userInfo}
     },
 	{}
