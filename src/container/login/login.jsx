@@ -5,7 +5,14 @@ import {saveUserAction} from '../../redux/action/login_action'
 import { Form, Icon, Input, Button,message} from 'antd';
 import {connect} from 'react-redux'
 import {QusLogin} from '../../api'
+import check from '../check/check'
 
+@connect(
+    (state)=>({userInfo:state.userInfo}),
+    {saveUserAction}
+)
+@Form.create()
+@check
 class Login extends Component {
     passwordValidator = (rule, value, callback)=>{
 		if(!value){
@@ -107,8 +114,7 @@ class Login extends Component {
             </div> 
         )           
 }}  
-export default  connect(
-    (state)=>({userInfo:state.userInfo}),
-    {saveUserAction}
-)(Form.create()(Login));
+
+
+export default  Login
 
