@@ -32,8 +32,10 @@ class Login extends Component {
             // console.log(LoginRes)
             if(status === 0){
                 message.success('登录成功')
-                this.props.history.replace('/admin')
+                this.props.history.push('/admin')
+                console.log(LoginRes)
                 this.props.saveUserAction(data)
+                console.log(this.props)
             }else{
                 message.warning(msg)
             }

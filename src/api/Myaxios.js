@@ -3,6 +3,10 @@ import qs from 'querystring'
 import {message} from 'antd' 
 import Nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
+import {BASE_URL} from '../config/index'
+
+axios.defaults.baseURL = BASE_URL
+
 axios.interceptors.request.use((config)=>{
     Nprogress.start()
 //   console.log(config)

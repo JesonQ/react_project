@@ -15,7 +15,7 @@ export default function(preState=initState,action){
     switch (type) {
         case SAV_USER:
             newState = {user:data.user,token:data.token,isLogin:true}
-            console.log(newState)
+            // console.log(newState)
             return newState
         default:
             return preState

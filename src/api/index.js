@@ -1,3 +1,6 @@
 import MyAxios from './Myaxios'
 
-export let QusLogin  = (LoginObj)=>MyAxios.post("/login",LoginObj)
+export let QusLogin  = (LoginObj)=>{
+    // console.log(LoginObj)
+    return MyAxios.post("/login",LoginObj)
+}
