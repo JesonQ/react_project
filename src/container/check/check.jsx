@@ -12,7 +12,7 @@ export default function (OldComponent){
     )
     class NewComponent extends Component{
        render(){
-           console.log(this.props)
+        //    console.log(this.props)
            const {isLogin} = this.props
            const {pathname} = this.props.location
            if(isLogin && pathname === '/login')return <Redirect to="/admin"/>

@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import {Layout} from 'antd'
-import Header from '../header/header'
+import Header from './header/header'
 import check from '../check/check'
+import LeftNav from './sider/leftNav'
 import './css/admin.less'
 
-const { Footer, Sider, Content } = Layout;
+const { Footer , Content ,Sider} = Layout;
 
 
 @check
@@ -12,8 +13,10 @@ class Admin extends Component {
 	render() {
 		return (
 			<Layout className="layout">
-                <Sider>Sider</Sider>
-                <Layout>
+                <Sider>
+                    <LeftNav/>
+                </Sider>
+                <Layout className="content-right">
                     <Header/>
                     <Content>Content</Content>
                     <Footer>Footer</Footer>
